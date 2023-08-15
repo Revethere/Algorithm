@@ -1,6 +1,6 @@
 # Rui-Ethereal's Code Repository .
 
-本库用来存储在 $OJ$ 上的刷题所写的参考代码 .
+本库用来存储在 OJ 上的刷题所写的参考代码 .
 
 仅供参考 .
 
@@ -8,12 +8,12 @@
 
 ----
 
-各 $OJ$ 用户名 :
+OJ 用户名 :
 
-$LuoGu$ : sAkUrA_Rui_SaTuRdAy
+LuoGu : sAkUrA_Rui_SaTuRdAy
 
-$Atcoder$ : Enigma_Rui
+Atcoder : Enigma_Rui
 
-$Codeforces$ : Rui_
+Codeforces : Rui_
 
 更多详见[博客](https://rui-ethereal.github.io/)
