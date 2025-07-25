@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <cstdio>
 #include <string>
 #include <new>
@@ -20,6 +21,7 @@ namespace BetterIO {
             return '!' <= ch && ch <= '~';
         }
     }
+    using std::string, std::is_same_v;
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE 1 << 16
 #endif
@@ -44,7 +46,7 @@ namespace BetterIO {
             volume = 0;
         }
         template <typename _Tp> betterInput& operator >> (_Tp &var) {
-            if constexpr(std::is_same_v<_Tp, char> || std::is_same_v<_Tp, std::string>) return inputCharType(var);
+            if constexpr(is_same_v<_Tp, char> || is_same_v<_Tp, string>) return inputCharType(var);
             else {
                 static bool neg = false;
                 while(!ExtraType::isDigit(*iter)) {
@@ -52,7 +54,7 @@ namespace BetterIO {
                     getChar();
                 }
                 var = 0;
-                if constexpr(std::is_same_v<_Tp, float> || std::is_same_v<_Tp, double>) return inputFloat(var, neg);
+                if constexpr(is_same_v<_Tp, float> || is_same_v<_Tp, double>) return inputFloat(var, neg);
                 else {
                     while(ExtraType::isDigit(*iter)) {
                         var = (var << 1) + (var << 3) + (*iter ^ '0');
@@ -65,7 +67,7 @@ namespace BetterIO {
         }
         template <typename _Tp> betterInput& inputCharType(_Tp &var) {
             while(!ExtraType::isVaild(*iter)) getChar();
-            if constexpr(std::is_same_v<_Tp, char>) var = *iter, getChar();
+            if constexpr(is_same_v<_Tp, char>) var = *iter, getChar();
             else {
                 var.clear();
                 while(ExtraType::isVaild(*iter)) {
@@ -81,7 +83,7 @@ namespace BetterIO {
                 getChar();
             }
             if(*iter == '.') {
-                getChar();
+                getChar(); 
                 _Tp dec = 0.1;
                 while(ExtraType::isDigit(*iter)) {
                     var += dec * (*iter ^ '0');
@@ -115,19 +117,26 @@ namespace BetterIO {
         }
         template <typename _Tp> betterOutput& operator << (_Tp var) {
             if(var < 0) putChar('-'), var = -var;
-            if(std::is_same_v<_Tp, float> || std::is_same_v<_Tp, double>) return outputFloat(var);
-            static char digit[25];
-            static short cur = 0;
-            do digit[cur++] = static_cast<char> (var % 10 + '0'); while(var /= 10);
-            while(cur) putChar(digit[--cur]);
+            if constexpr(is_same_v<_Tp, float> || is_same_v<_Tp, double>) return outputFloat(var);
+            else {
+                static char digit[25];
+                static short cur = 0;
+                do digit[cur++] = static_cast<char> (var % 10 + '0'); while(var /= 10);
+                while(cur) putChar(digit[--cur]);
+            }
             return *this;
         }
         betterOutput& operator << (const char &var) {
             putChar(var);
             return *this;
         }
-        betterOutput& operator<< (const std::string &var) {
+        betterOutput& operator << (const string &var) {
             for(auto cur: var) putChar(cur);
+            return *this;
+        }
+        template <typename _Tp> betterOutput& outputFloat(_Tp &var) {
+            const string str_var = std::to_string(var);
+            for(auto cur: str_var) putChar(cur);
             return *this;
         }
         ~betterOutput() { flush(); delete[] buffer; }
