@@ -130,6 +130,10 @@ namespace BetterIO {
             putChar(var);
             return *this;
         }
+        betterOutput& operator << (const char *var) {
+            while(*var) putChar(*var++);
+            return *this;
+        }
         betterOutput& operator << (const string &var) {
             for(auto cur: var) putChar(cur);
             return *this;
